@@ -13,4 +13,9 @@ class FileUpload extends Model
     {
         return $query->where('expires_at', '<', Carbon::now());
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('expires_at', '>', Carbon::now());
+    }
 }

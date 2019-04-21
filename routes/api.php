@@ -18,4 +18,5 @@ Route::namespace('Api\V1')
      ->prefix('v1')
      ->group(function () {
          Route::post('files', 'UploadFile')->name('upload-file');
+         Route::get('files/{token}', 'DownloadFile')->name('download-file');
      });

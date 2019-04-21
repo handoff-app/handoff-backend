@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FileUpload extends Model
 {
-    protected $fillable = ['path', 'disk', 'access_token'];
+    protected $fillable = ['path', 'disk', 'access_token', 'expires_at'];
 
     public function scopeExpired($query)
     {

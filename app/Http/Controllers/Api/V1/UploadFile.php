@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\UploadFileRequest;
 use App\Http\Resources\Api\UploadedFileResource;
 use App\Models\FileUpload;
+use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 
@@ -24,12 +24,10 @@ class UploadFile extends Controller
     {
         $path = Storage::putFile('uploads', $request->file('file'));
 
-        Log::debug('request', $request->toArray());
-
-
         $fileUpload = new FileUpload([
             'path' => $path,
             'access_token' => Uuid::uuid4(),
+            'expires_at' => Carbon::now()->addHour(),
         ]);
 
         $fileUpload->save();

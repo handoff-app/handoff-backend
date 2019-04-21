@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\V1;
 use App\Models\FileUpload;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -26,6 +27,8 @@ class UploadFileTest extends TestCase
                 'file' => $file,
             ]
         );
+
+        $response->assertStatus(Response::HTTP_CREATED);
 
         Storage::disk()->assertExists("uploads/{$file->hashName()}");
 

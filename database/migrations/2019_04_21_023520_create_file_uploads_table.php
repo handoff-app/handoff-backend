@@ -19,7 +19,7 @@ class CreateFileUploadsTable extends Migration
             $table->string('path');
             $table->string('disk')->nullable();
             $table->string('access_token');
-            $table->timestamp('expires_at')->default(Carbon::now()->addHour());
+            $table->timestamp('expires_at');
             $table->timestamps();
             $table->softDeletes();
         });

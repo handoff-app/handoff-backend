@@ -11,7 +11,7 @@ class FileUpload extends Model
 
     public function scopeExpired($query)
     {
-        return $query->where('expires_at', '<', Carbon::now());
+        return $query->where('expires_at', '<=', Carbon::now());
     }
 
     public function scopeActive($query)

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Api\V1;
 
+use App\Models\FileUpload;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -27,12 +29,26 @@ class UploadFileTest extends TestCase
 
         Storage::disk()->assertExists("uploads/{$file->hashName()}");
 
+        try {
+            $fileUpload = FileUpload::where('path', 'like', "%{$file->hashName()}%")->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            $this->fail('File upload does not exist in database');
+            return;
+        }
+
         $response->assertJsonStructure([
             'data' => [
                 'download_uri',
                 'delete_uri',
             ],
         ]);
+
+        $response->assertJson([
+                'data' => [
+                    'download_uri' => route('api.v1.download-file', ['token' => $fileUpload->access_token])
+                ]
+            ]
+        );
 
     }
 }

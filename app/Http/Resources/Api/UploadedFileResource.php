@@ -16,7 +16,7 @@ class UploadedFileResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'download_uri' => "http://www.example.test/download?access_token={$this->resource->access_token}",
+            'download_uri' => route('api.v1.download-file', ['token' => $this->resource->access_token]),
             'delete_uri' => "http://www.example.test/delete?access_token={$this->resource->access_token}",
         ];
     }

@@ -7,10 +7,14 @@ namespace App\Entities\Auth\JWT;
 use App\Contracts\Entities\Auth\JWT\Token as TokenContract;
 use Carbon\Carbon;
 use Exception;
+use Firebase\JWT\BeforeValidException;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
+use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
+use UnexpectedValueException;
 
 class Token implements TokenContract
 {
@@ -93,6 +97,11 @@ class Token implements TokenContract
     /**
      * @param string $jwt
      * @return TokenContract
+     * @throws UnexpectedValueException     Provided JWT was invalid
+     * @throws SignatureInvalidException    Provided JWT was invalid because the signature verification failed
+     * @throws BeforeValidException         Provided JWT is trying to be used before it's eligible as defined by 'nbf'
+     * @throws BeforeValidException         Provided JWT is trying to be used before it's been created as defined by 'iat'
+     * @throws ExpiredException             Provided JWT has since expired, as defined by the 'exp' claim
      * @throws Exception
      */
     public static function fromTokenString(string $jwt): TokenContract
@@ -164,7 +173,6 @@ class Token implements TokenContract
 
     public static function fromUrlSafeTokenString(string $jwt): TokenContract
     {
-        dd($jwt);
         return self::fromTokenString(JWT::urlsafeB64Decode($jwt));
     }
 }

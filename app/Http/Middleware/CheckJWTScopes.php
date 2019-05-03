@@ -2,16 +2,19 @@
 
 namespace App\Http\Middleware;
 
+use App\Contracts\Http\ResolvesToken;
 use App\Entities\Auth\JWT\Scope;
 use App\Entities\Auth\JWT\Token;
+use App\Traits\Http\ResolveToken;
 use Closure;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 
-class CheckJWTScopes
+class CheckJWTScopes implements ResolvesToken
 {
+    use ResolveToken;
     /**
      * Handle an incoming request.
      *
@@ -22,14 +25,8 @@ class CheckJWTScopes
      */
     public function handle($request, Closure $next, ...$scopes)
     {
-        // TODO: Separate validation into Trait
-        if ($request->query('token')) {
-            $tokenString = $this->tokenFromQuery($request);
-        } else {
-            $tokenString = $this->tokenFromHeader($request);
-        }
         try {
-            $token = Token::fromTokenString($tokenString);
+            $token = $this->resolveTokenFromRequest($request);
         } catch (\Exception $e) {
             return response($e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
@@ -39,18 +36,6 @@ class CheckJWTScopes
         }
 
         return $next($request);
-    }
-
-    private function tokenFromHeader(Request $request)
-    {
-        $header = $request->header('Authorization');
-
-        return substr($header, 7);
-    }
-
-    private function tokenFromQuery(Request $request)
-    {
-        return JWT::urlsafeB64Decode($request->query('token'));
     }
 
     private function tokenHasScopes(\App\Contracts\Entities\Auth\JWT\Token $token, array $scopes): bool

@@ -29,4 +29,9 @@ class Scope
     {
         return new self($scope);
     }
+
+    public function __toString()
+    {
+        return $this->value;
+    }
 }

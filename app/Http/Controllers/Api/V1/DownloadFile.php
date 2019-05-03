@@ -14,16 +14,11 @@ class DownloadFile extends Controller
      * Handle the incoming request.
      *
      * @param DownloadFileRequest $request
-     * @param string $token
+     * @param FileUpload $fileUpload
      * @return Response
      */
-    public function __invoke(DownloadFileRequest $request, string $token)
+    public function __invoke(DownloadFileRequest $request, FileUpload $fileUpload)
     {
-        $fileUpload = FileUpload::where('access_token', $token)->active()->first();
-
-        if (is_null($fileUpload)) {
-            return response('Link is either expired or invalid', Response::HTTP_NOT_FOUND);
-        }
 
         return Storage::download($fileUpload->path);
 

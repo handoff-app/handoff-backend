@@ -14,7 +14,7 @@
         "laravel/tinker": "^1.0",
         "nesbot/carbon": "~2",
         "phpseclib/phpseclib": "^2.0",
-        "tymon/jwt-auth": "~1"
+        "firebase/php-jwt": "^5.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

@@ -25,8 +25,8 @@ class UploadFile extends Controller
         $path = Storage::putFile('uploads', $request->file('file'));
 
         $fileUpload = new FileUpload([
+            'uuid' => Uuid::uuid4(),
             'path' => $path,
-            'access_token' => Uuid::uuid4(),
             'expires_at' => Carbon::now()->addHour(),
         ]);
 

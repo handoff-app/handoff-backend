@@ -16,9 +16,9 @@ class CreateFileUploadsTable extends Migration
     {
         Schema::create('file_uploads', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->uuid('uuid');
             $table->string('path');
             $table->string('disk')->nullable();
-            $table->string('access_token');
             $table->timestamp('expires_at');
             $table->timestamps();
             $table->softDeletes();

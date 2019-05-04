@@ -38,7 +38,7 @@ class CheckJWTScopes implements ResolvesToken
         return $next($request);
     }
 
-    private function tokenHasScopes(\App\Contracts\Entities\Auth\JWT\Token $token, array $scopes): bool
+    private function tokenHasScopes(Token $token, array $scopes): bool
     {
         $tokenScopes = $token->getScopes();
 

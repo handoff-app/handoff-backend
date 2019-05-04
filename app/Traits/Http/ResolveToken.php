@@ -16,7 +16,7 @@ trait ResolveToken
      * @return Token
      * @throws Exception
      */
-    public function resolveTokenFromRequest(Request $request): \App\Contracts\Entities\Auth\JWT\Token
+    public function resolveTokenFromRequest(Request $request): Token
     {
         // TODO: Separate validation into Trait
         if ($request->query('token')) {

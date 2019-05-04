@@ -46,12 +46,8 @@ class UploadFileTest extends TestCase
             ],
         ]);
 
-        $response->assertJson([
-                'data' => [
-                    'download_uri' => route('api.v1.download-file', ['token' => $fileUpload->access_token])
-                ]
-            ]
-        );
+        $downloadUri = $response->json('data')['download_uri'];
 
+        $this->assertEquals(1, preg_match('/.*\/files\/[a-zA-Z\d-]+\?token=.*$/', $downloadUri));
     }
 }

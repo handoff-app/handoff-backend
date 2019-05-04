@@ -174,4 +174,20 @@ class Token
     {
         return self::fromTokenString(JWT::urlsafeB64Decode($jwt));
     }
+
+    /**
+     * @return string
+     */
+    public function getTokenId(): string
+    {
+        return $this->tokenId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpiresAt(): string
+    {
+        return $this->expiresAt;
+    }
 }

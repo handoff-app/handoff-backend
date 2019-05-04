@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(FileUpload::class, function (Faker $faker) {
     return [
+        'uuid' => $faker->uuid,
         'path' => "{$faker->uuid}.{$faker->fileExtension}",
-        'access_token' => $faker->bothify('*******************************'),
         'expires_at' => Carbon::now()->addHour(),
     ];
 });

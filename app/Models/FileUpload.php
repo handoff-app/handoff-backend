@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FileUpload extends Model
 {
-    protected $fillable = ['path', 'disk', 'access_token', 'expires_at'];
+    protected $fillable = ['uuid', 'path', 'disk', 'expires_at'];
 
     public function scopeExpired($query)
     {
@@ -17,5 +17,10 @@ class FileUpload extends Model
     public function scopeActive($query)
     {
         return $query->where('expires_at', '>', Carbon::now());
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
     }
 }

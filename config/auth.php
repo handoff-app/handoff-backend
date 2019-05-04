@@ -46,6 +46,7 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
     ],
 
     /*
@@ -98,6 +99,10 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
         ],
+    ],
+
+    'jwt' => [
+        'secret' => env('JWT_SECRET'),
     ],
 
 ];

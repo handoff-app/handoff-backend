@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Api\V1;
+namespace App\Http\Requests;
 
 use App\Contracts\Http\ResolvesToken;
 use App\Entities\Auth\JWT\Scope;
 use App\Traits\Http\ResolveToken;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DownloadFileRequest extends FormRequest implements ResolvesToken
+class DeleteFileRequest extends FormRequest implements ResolvesToken
 {
     use ResolveToken;
 
@@ -18,14 +18,10 @@ class DownloadFileRequest extends FormRequest implements ResolvesToken
      */
     public function authorize()
     {
-        try {
-            $token = $this->resolveToken();
-        } catch (\Exception $e) {
-            return false;
-        }
+        $token = $this->resolveToken();
 
         return $token->getSubject() === $this->route('fileUpload')->uuid
-            && $token->hasScope(new Scope('FileUpload-view'));
+            && $token->hasScope(new Scope('FileUpload-delete'));
     }
 
     /**
@@ -35,6 +31,8 @@ class DownloadFileRequest extends FormRequest implements ResolvesToken
      */
     public function rules()
     {
-        return [];
+        return [
+            //
+        ];
     }
 }

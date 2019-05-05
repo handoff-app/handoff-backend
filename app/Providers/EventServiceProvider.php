@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Events\FileDownloaded;
+use App\Events\FileUploadDeleted;
+use App\Listeners\DeleteFile;
 use App\Listeners\RevokeToken;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         FileDownloaded::class => [
             RevokeToken::class,
         ],
+        FileUploadDeleted::class => [
+            DeleteFile::class,
+        ]
     ];
 
     /**

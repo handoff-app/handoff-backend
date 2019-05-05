@@ -21,4 +21,10 @@ Route::namespace('Api\V1')
          Route::get('files/{fileUpload}', 'DownloadFile')
               ->name('download-file')
               ->middleware('jwt:FileUpload-view');
+         Route::get('files/{fileUpload}/delete', 'DeleteFile')
+              ->name('delete-file-action')
+              ->middleware('jwt:FileUpload-delete');
+         Route::delete('files/{fileUpload}', 'DeleteFile')
+              ->name('delete-file')
+              ->middleware('jwt:FileUpload-delete');
      });

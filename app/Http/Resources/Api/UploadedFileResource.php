@@ -26,7 +26,7 @@ class UploadedFileResource extends JsonResource
 
         return [
             'download_uri' => route('api.v1.download-file', [$this->resource->uuid, 'token' => $downloadToken]),
-            'delete_uri' => "http://www.example.test/delete?token={$deleteToken}",
+            'delete_uri' => route('api.v1.delete-file-action', [$this->resource->uuid, 'token' => $deleteToken]),
         ];
     }
 }

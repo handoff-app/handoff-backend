@@ -26,7 +26,7 @@ class DownloadFile extends Controller
             $fileStream = Storage::disk($fileUpload->disk)->readStream($fileUpload->path);
             fpassthru($fileStream);
             fclose($fileStream);
-            event(new FileDownloaded($fileUpload, $request->resolveTokenFromRequest($request)));
+            event(new FileDownloaded($fileUpload, $request->resolveToken()));
         },
             basename($fileUpload->path),
             [

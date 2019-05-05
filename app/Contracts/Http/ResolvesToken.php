@@ -4,8 +4,7 @@
 namespace App\Contracts\Http;
 
 
-use App\Contracts\Entities\Auth\JWT\Token;
-use Exception;
+use App\Entities\Auth\JWT\Token;
 use Illuminate\Http\Request;
 
 interface ResolvesToken
@@ -13,7 +12,6 @@ interface ResolvesToken
     /**
      * @param Request $request
      * @return Token
-     * @throws Exception
      */
-    public function resolveTokenFromRequest(Request $request);
+    public function resolveToken(?Request $request): Token;
 }

@@ -4,11 +4,13 @@ namespace Tests\Feature\Api\V1;
 
 use App\Entities\Auth\JWT\Scope;
 use App\Entities\Auth\JWT\Token;
+use App\Events\FileDownloaded;
 use App\Models\FileUpload;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -20,6 +22,7 @@ class DownloadFileTest extends TestCase
     public function itDownloadsFilesAndRemovesThem()
     {
         Storage::fake();
+        Event::fake();
 
         $file = UploadedFile::fake()->create('fake-file.sql', 1024);
 
@@ -35,6 +38,14 @@ class DownloadFileTest extends TestCase
         $response = $this->get(route('api.v1.download-file', [$fileUpload->uuid, 'token' => $token->encodeUrlSafe()]));
         $response->assertStatus(200);
         $response->assertHeader('Content-Disposition', "attachment; filename={$file->hashName()}");
+
+        // Get streamed content - needed for event to be dispatched
+        $response->streamedContent();
+
+        Event::assertDispatched(FileDownloaded::class, function (FileDownloaded $event) use ($token, $fileUpload) {
+            return $event->token->getTokenId() === $token->getTokenId()
+                && $event->file->uuid === $fileUpload->uuid;
+        });
     }
 
     /** @test */

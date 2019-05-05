@@ -15,6 +15,7 @@ trait ResolveToken
      * @param Request $request
      * @return Token
      * @throws Exception
+     * @todo Maybe make this method only usable on requests so it can just use `$this`
      */
     public function resolveTokenFromRequest(Request $request): Token
     {

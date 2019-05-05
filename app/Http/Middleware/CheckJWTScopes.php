@@ -26,7 +26,7 @@ class CheckJWTScopes implements ResolvesToken
     public function handle($request, Closure $next, ...$scopes)
     {
         try {
-            $token = $this->resolveTokenFromRequest($request);
+            $token = $this->resolveToken($request);
         } catch (\Exception $e) {
             return response($e->getMessage(), Response::HTTP_UNAUTHORIZED);
         }

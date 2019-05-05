@@ -12,18 +12,21 @@ use Illuminate\Http\Request;
 trait ResolveToken
 {
     /**
-     * @param Request $request
+     * @param Request|null $request
      * @return Token
      * @throws Exception
-     * @todo Maybe make this method only usable on requests so it can just use `$this`
      */
-    public function resolveTokenFromRequest(Request $request): Token
+    public function resolveToken(?Request $request = null): Token
     {
-        // TODO: Separate validation into Trait
-        if ($request->query('token')) {
-            $tokenString = JWT::urlsafeB64Decode($request->query('token'));
+        $requestInstance = $request ?? $this;
+        if (!($requestInstance instanceof Request)) {
+            throw new Exception('The ResolveToken trait can only be used on instances of ' . Request::class);
+        }
+
+        if ($requestInstance->query('token')) {
+            $tokenString = JWT::urlsafeB64Decode($requestInstance->query('token'));
         } else {
-            $header = $request->header('Authorization');
+            $header = $requestInstance->header('Authorization');
             $tokenString = substr($header, 7);
         }
 

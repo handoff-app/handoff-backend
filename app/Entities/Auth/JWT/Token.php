@@ -4,7 +4,6 @@
 namespace App\Entities\Auth\JWT;
 
 
-use App\Contracts\Entities\Auth\JWT\Token as TokenContract;
 use Carbon\Carbon;
 use Exception;
 use Firebase\JWT\BeforeValidException;
@@ -16,7 +15,7 @@ use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use UnexpectedValueException;
 
-class Token implements TokenContract
+class Token
 {
     /** @var Collection */
     protected $scopes;
@@ -104,7 +103,7 @@ class Token implements TokenContract
      * @throws ExpiredException             Provided JWT has since expired, as defined by the 'exp' claim
      * @throws Exception
      */
-    public static function fromTokenString(string $jwt): TokenContract
+    public static function fromTokenString(string $jwt): Token
     {
         $data = JWT::decode($jwt, config('auth.jwt.secret'), ['HS256']);
 
@@ -171,8 +170,24 @@ class Token implements TokenContract
         });
     }
 
-    public static function fromUrlSafeTokenString(string $jwt): TokenContract
+    public static function fromUrlSafeTokenString(string $jwt): Token
     {
         return self::fromTokenString(JWT::urlsafeB64Decode($jwt));
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenId(): string
+    {
+        return $this->tokenId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpiresAt(): string
+    {
+        return $this->expiresAt;
     }
 }

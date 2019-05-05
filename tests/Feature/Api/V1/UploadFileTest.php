@@ -47,7 +47,9 @@ class UploadFileTest extends TestCase
         ]);
 
         $downloadUri = $response->json('data')['download_uri'];
+        $deleteUri = $response->json('data')['delete_uri'];
 
         $this->assertEquals(1, preg_match('/.*\/files\/[a-zA-Z\d-]+\?token=.*$/', $downloadUri));
+        $this->assertEquals(1, preg_match('/.*\/files\/[a-zA-Z\d-]+\/delete\?token=.*$/', $deleteUri));
     }
 }
